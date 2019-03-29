@@ -1,32 +1,34 @@
-import { bindActionCreators } from "redux";
-import { connect } from "react-redux";
-import { SetUSER, SetID } from "../store/actions/user";
-
 import React from 'react';
 import { Redirect } from 'react-router';
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import { SetUSER, SetID } from "../store/actions/user";
+
 import PostLogin from "../services/postLogin";
 import PostRegister from "../services/postRegister";
-import HandleRequest from "../container2/authenticateRequest";
 
 
 class AuthenticateClass extends React.Component {
     state = { text: "Sign Up", username: "", password: "" }
 
-    handleName = (event) => this.setState({ username: event.target.value });
-    handlePassword = (event) => this.setState({ password: event.target.value });
 
+    /*shouldComponentUpdate(nextProps, nextState) {
+        if (nextProps.User.username === "") {
+            return true;
+        }
+    }*/
+
+
+
+    /******************************************************************/
     handleClick = (event) => {
         event.preventDefault();
         const { text, username, password } = this.state;
-        HandleRequest(text, username, password);
-
-        /*if (this.state.text === "Sign Up") {
+        if (text === "Sign Up") {
             this.auth({ username, password });
         }
-        else { this.register({ username, password }); }*/
+        else { this.register({ username, password }); }
     }
-
-
 
     register = async (obj) => {
         try {
@@ -40,7 +42,6 @@ class AuthenticateClass extends React.Component {
         }
     }
 
-
     auth = async (obj) => {
         try {
             const user = await PostLogin(obj);
@@ -52,7 +53,10 @@ class AuthenticateClass extends React.Component {
             console.log(error);
         }
     }
+    /********************************************************************/
 
+    handleName = (event) => this.setState({ username: event.target.value });
+    handlePassword = (event) => this.setState({ password: event.target.value });
 
     handleHeader = (event) => {
         event.preventDefault();
@@ -77,25 +81,22 @@ class AuthenticateClass extends React.Component {
         } else {
 
             const { text, username, password } = this.state;
-            let id, submitText, formtext, color;
+            let id, formtext, resultSubmit, submitText, color;
 
             if (text === "Log In") {
                 id = "nav2";
-                submitText = "register";
                 formtext = "register for list";
+                submitText = "register";
                 color = "2";
             } else {
                 id = "nav1";
-                submitText = "log in";
                 formtext = "log in for list";
+                submitText = "log in";
                 color = "1";
             }
+
             const opacity = ((username.length > 0 && password.length > 0) ? "2" : "1");
             const submitView = `submit opacity${opacity} color${color}`;
-
-
-            let resultSubmit;
-
             if (this.props.User._id === "X") {
                 resultSubmit = (id === "nav1" ?
                     <div className="alert" style={{ color: "red" }}><p>Invalid</p><p>username or</p><p>password</p></div> :
@@ -104,6 +105,8 @@ class AuthenticateClass extends React.Component {
                 resultSubmit = <div className="alert"><p>Wellcome,</p><p>please</p><p>{formtext}</p></div>;
             }
 
+
+            console.log("fggffgfg");
             return (<div id="PageView">
                 <header>
                     <div id="headerPage">
@@ -137,8 +140,6 @@ class AuthenticateClass extends React.Component {
         }
     }
 }
-
-
 
 export default connect(state => ({ User: state.User }),
     dispatch => bindActionCreators({ SetUSER, SetID }, dispatch))(AuthenticateClass);

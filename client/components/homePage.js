@@ -1,11 +1,16 @@
-import { connect } from "react-redux";
 import React from 'react';
+import { connect } from "react-redux";
 import { NavLink } from 'react-router-dom';
-import DataField from "../container/dataFeild";
-import AppMine from "../container/appMine";
-import ViewFooter from "../container/viewFooter";
+
 
 class GameClass extends React.Component {
+
+    /*shouldComponentUpdate(nextProps, nextState) {
+        if (nextProps.User.username !== "") {
+            return true;
+        }
+    }*/
+
     render() {
         return (<div id="PageView" >
             <header>
@@ -21,12 +26,6 @@ class GameClass extends React.Component {
                 </div>
             </header>
             <main>
-                <div id="gamePage">
-                    <div className="advert"><DataField /></div>
-                    <div className="content"><div><AppMine /></div></div>
-                    <div className="footer"><ViewFooter /></div>
-                    <div className="empty"></div>
-                </div>
             </main>
         </div >);
 
